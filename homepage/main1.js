@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ".mission-section",
     ".who-creative-section",
     ".context-section",
+    ".featured-section",
   ];
 
   sectionsToObserve.forEach((selector) => {
@@ -70,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
     animateCursor();
 
     const interactiveElements = document.querySelectorAll(
-      "a, button, .client-card, .menu-toggle, .fan-card, .col-img, .glass-icon-card, .img-card, .glass-card, .ctx-img"
+      "a, button, .client-card, .menu-toggle, .fan-card, .col-img, .glass-icon-card, .img-card, .glass-card, .ctx-img, .project-card, .btn-lime, .site-badge"
     );
     interactiveElements.forEach((el) => {
       el.addEventListener("mouseenter", () =>
@@ -225,7 +226,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // SCENE
     const scene = new THREE.Scene();
-    // Transparent background to blend with section
     scene.background = null;
 
     // CAMERA
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderer.outputEncoding = THREE.sRGBEncoding;
     container.appendChild(renderer.domElement);
 
-    // LIGHTING (Adjusted for Gold/Dark Theme)
+    // LIGHTING
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
     scene.add(ambientLight);
 
@@ -253,20 +253,17 @@ document.addEventListener("DOMContentLoaded", () => {
     dirLight.position.set(5, 10, 7);
     scene.add(dirLight);
 
-    // Warm lights instead of blue/purple
-    const warmLight1 = new THREE.PointLight(0xd4af37, 2, 50); // Gold
+    const warmLight1 = new THREE.PointLight(0xd4af37, 2, 50);
     warmLight1.position.set(-10, 0, 10);
     scene.add(warmLight1);
 
-    const warmLight2 = new THREE.PointLight(0xffffff, 1, 50); // White
+    const warmLight2 = new THREE.PointLight(0xffffff, 1, 50);
     warmLight2.position.set(10, 5, 5);
     scene.add(warmLight2);
 
-    // GEOMETRY (TorusKnot)
-    // REDUCED SIZE HERE: Radius 6, Tube 2
+    // GEOMETRY (TorusKnot - Radius 6)
     const geometry = new THREE.TorusKnotGeometry(6, 2, 256, 32, 2, 3);
 
-    // Save original positions for ripple effect
     const count = geometry.attributes.position.count;
     const originalPositions = new Float32Array(count * 3);
     for (let i = 0; i < count * 3; i++) {
@@ -274,12 +271,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     geometry.userData.originalPositions = originalPositions;
 
-    // MATERIAL (Dark Metallic Gold Liquid)
+    // MATERIAL
     const material = new THREE.MeshPhysicalMaterial({
-      color: 0xaa8c2c, // Dark Gold
-      metalness: 0.9, // High metallic
-      roughness: 0.1, // Smooth
-      transmission: 0.2, // Low transmission (more opaque liquid)
+      color: 0xaa8c2c,
+      metalness: 0.9,
+      roughness: 0.1,
+      transmission: 0.2,
       thickness: 2,
       envMapIntensity: 2.0,
       clearcoat: 1,
@@ -289,19 +286,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const liquidMesh = new THREE.Mesh(geometry, material);
     scene.add(liquidMesh);
 
-    // ENV MAP (Fake Reflection)
+    // ENV MAP
     const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(256);
     const cubeCamera = new THREE.CubeCamera(0.1, 1000, cubeRenderTarget);
     scene.add(cubeCamera);
     material.envMap = cubeRenderTarget.texture;
 
-    // ANIMATION LOOP
+    // ANIMATION
     const clock = new THREE.Clock();
 
     function animate3D() {
       const time = clock.getElapsedTime();
 
-      // Ripple Logic
       const positions = liquidMesh.geometry.attributes.position.array;
       const originals = liquidMesh.geometry.userData.originalPositions;
 
@@ -310,7 +306,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const py = originals[i * 3 + 1];
         const pz = originals[i * 3 + 2];
 
-        // Slow, heavy liquid movement
         const wave1 = 0.3 * Math.sin(px * 0.5 + time * 1.5);
         const wave2 = 0.3 * Math.cos(py * 0.3 + time * 1.0);
         const wave3 = 0.2 * Math.sin(pz * 0.5 + time);
@@ -321,11 +316,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       liquidMesh.geometry.attributes.position.needsUpdate = true;
 
-      // Rotation
       liquidMesh.rotation.x = time * 0.08;
       liquidMesh.rotation.y = time * 0.1;
 
-      // Update Reflections
       liquidMesh.visible = false;
       cubeCamera.update(renderer, scene);
       liquidMesh.visible = true;
@@ -336,14 +329,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     animate3D();
 
-    // RESIZE HANDLER
     window.addEventListener("resize", () => {
       camera.aspect = container.clientWidth / container.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(container.clientWidth, container.clientHeight);
     });
   };
-  // Initialize Liquid Animation
   initLiquidAnimation();
 });
 
