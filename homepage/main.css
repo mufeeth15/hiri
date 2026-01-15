@@ -1,3 +1,6 @@
+/* =========================================
+   1. GLOBAL VARIABLES & RESET
+   ========================================= */
 :root {
   --bg-color: #050505;
   --text-color: #ffffff;
@@ -38,7 +41,9 @@ ul {
   list-style: none;
 }
 
-/* 2. PRELOADER */
+/* =========================================
+   2. PRELOADER
+   ========================================= */
 #preloader {
   position: fixed;
   top: 0;
@@ -101,7 +106,9 @@ ul {
   }
 }
 
-/* 3. HEADER & NAV */
+/* =========================================
+   3. HEADER & NAV
+   ========================================= */
 header {
   position: fixed;
   top: 20px;
@@ -165,7 +172,9 @@ header {
   z-index: 102;
 }
 
-/* 4. HERO SECTION */
+/* =========================================
+   4. HERO SECTION (With Gold Particles)
+   ========================================= */
 .hero-masterpiece {
   position: relative;
   min-height: 100vh;
@@ -177,14 +186,39 @@ header {
   padding-top: 120px;
   text-align: center;
   overflow: hidden;
+  background: transparent;
+  z-index: 1;
 }
+
+#heroCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-overlay-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, transparent 0%, #050505 90%);
+  z-index: 2;
+  pointer-events: none;
+}
+
 .masterpiece-title {
+  position: relative;
   font-family: var(--font-heading);
   font-size: 3.5rem;
   font-weight: 600;
   line-height: 1.1;
   letter-spacing: -1px;
-  z-index: 2;
+  z-index: 5;
   color: #fff;
   opacity: 0;
 }
@@ -219,6 +253,7 @@ header {
   align-items: center;
   margin-bottom: 40px;
   perspective: 1000px;
+  z-index: 5;
 }
 .fan-deck {
   position: relative;
@@ -328,6 +363,7 @@ header {
 }
 
 .masterpiece-footer {
+  position: relative;
   max-width: 500px;
   z-index: 5;
   margin-top: 10px;
@@ -364,24 +400,48 @@ header {
   border-color: #fff;
 }
 
-/* 5. CLIENTS SECTION */
+/* =========================================
+   5. CLIENTS SECTION (With 3D Liquid)
+   ========================================= */
 .clients-section {
   position: relative;
-  padding: 100px 0px;
+  padding: 150px 0px 200px 0px;
   width: 100%;
-  overflow: hidden;
+  overflow: hidden; /* Contains the canvas */
   opacity: 0;
   transform: translateY(50px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  z-index: 5;
+  background: var(--bg-color);
 }
 .clients-section.visible {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* New Container for the Three.js Canvas */
+#liquid-canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Behind content */
+  opacity: 0.7; /* Slight fade so text is readable */
+  pointer-events: none;
+}
+#liquid-canvas-container canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .section-header {
+  position: relative;
   text-align: center;
   margin-bottom: 60px;
   padding: 0 20px;
+  z-index: 2; /* Above canvas */
 }
 .section-label {
   display: inline-block;
@@ -401,9 +461,11 @@ header {
   color: #fff;
 }
 .marquee-wrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 30px;
+  z-index: 2; /* Above canvas */
 }
 .marquee-row {
   position: relative;
@@ -456,6 +518,7 @@ header {
     transform: translateX(0);
   }
 }
+
 .client-card {
   flex-shrink: 0;
   width: 200px;
@@ -490,11 +553,13 @@ header {
   color: var(--gold-primary);
 }
 
-/* 6. MISSION & VISION */
+/* =========================================
+   6. MISSION & VISION
+   ========================================= */
 .mission-section {
   position: relative;
   width: 100%;
-  height: 190vh;
+  height: 170vh;
   background-color: var(--bg-color);
   z-index: 10;
 }
@@ -582,6 +647,7 @@ header {
     transform: translateY(0);
   }
 }
+
 .mission-content-glass {
   position: relative;
   z-index: 10;
@@ -647,7 +713,9 @@ header {
   border-color: #fff;
 }
 
-/* 7. WHO WE ARE */
+/* =========================================
+   7. WHO WE ARE
+   ========================================= */
 .who-creative-section {
   position: relative;
   width: 100%;
@@ -820,7 +888,9 @@ header {
   letter-spacing: 1px;
 }
 
-/* 8. CONTEXT SECTION (UPDATED: Multiple Images) */
+/* =========================================
+   8. CONTEXT SECTION
+   ========================================= */
 .context-section {
   position: relative;
   width: 100%;
@@ -831,7 +901,7 @@ header {
   justify-content: center;
   overflow: hidden;
   z-index: 5;
-  padding: 80px 5%;
+  padding: 50px 5% 80px;
 }
 .context-glow-blue {
   position: absolute;
@@ -1002,13 +1072,18 @@ header {
   max-width: 500px;
 }
 
-/* 9. RESPONSIVE */
+/* =========================================
+   9. RESPONSIVE DESIGN
+   ========================================= */
 @media (max-width: 900px) {
   header {
     top: 10px;
     width: 95%;
     padding: 12px 25px;
   }
+
+
+  
   .section-title {
     font-size: 1.5rem;
     margin-bottom: -20px;
@@ -1019,8 +1094,9 @@ header {
     font-size: 0.9rem;
   }
   .clients-section {
-    padding: 0px 0px;
+    padding: 0px 0px 100px;
   }
+
   .masterpiece-desc {
     padding-right: 20px;
     padding-left: 20px;
@@ -1029,6 +1105,8 @@ header {
   .hero-masterpiece {
     padding-top: 0px;
   }
+
+  /* Mobile Nav */
   .menu-toggle {
     display: block;
   }
@@ -1054,6 +1132,8 @@ header {
   .nav-links a {
     font-size: 1.5rem !important;
   }
+
+  /* Hero Adjustments */
   .masterpiece-title {
     font-size: 2rem;
     margin-bottom: -30px;
@@ -1079,6 +1159,13 @@ header {
   .fan-deck.fanned .fan-card:nth-child(6) {
     transform: translateX(90px) rotate(10deg);
   }
+
+  /* Canvas Fade for Mobile */
+  #heroCanvas {
+    opacity: 0.5;
+  }
+
+  /* Mission & Who Section */
   .mission-section {
     height: 180vh;
   }
@@ -1096,6 +1183,7 @@ header {
   .scroll-col {
     width: 48%;
   }
+
   .who-creative-section {
     flex-direction: column;
     padding-top: 80px;
@@ -1120,6 +1208,7 @@ header {
   .who-title {
     font-size: 3rem;
   }
+
   .diagonal-stream-container {
     position: relative;
     width: 120%;
@@ -1141,8 +1230,10 @@ header {
     width: 180px;
     height: 100px;
   }
+
+  /* Context Section */
   .context-section {
-    padding: 60px 20px;
+    padding: 0px 20px 60px;
     overflow: hidden;
   }
   .context-visuals-cluster {
@@ -1181,6 +1272,8 @@ header {
   .context-desc {
     max-width: 100%;
   }
+
+  /* Cursor & Scrollbar */
   .cursor-ring,
   .cursor-core {
     display: none;
@@ -1192,7 +1285,9 @@ header {
   }
 }
 
-/* 10. SCROLLBAR */
+/* =========================================
+   10. SCROLLBAR
+   ========================================= */
 html {
   scrollbar-width: thin;
   scrollbar-color: var(--gold-primary) transparent;
@@ -1216,7 +1311,9 @@ html {
   border: 2px solid transparent;
 }
 
-/* 11. CURSOR */
+/* =========================================
+   11. CUSTOM CURSOR
+   ========================================= */
 .cursor-core {
   position: fixed;
   top: 0;
