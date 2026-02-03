@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   menuToggle.addEventListener("click", () => {
     navLinks.classList.toggle("active");
+    document.body.classList.toggle("no-scroll");
+
     if (navLinks.classList.contains("active")) {
       icon.classList.remove("ri-menu-4-line");
       icon.classList.add("ri-close-line");
